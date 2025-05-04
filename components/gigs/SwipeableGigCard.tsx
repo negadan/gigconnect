@@ -153,13 +153,14 @@ export function SwipeableGigCard({
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
-    height: 420,
+    height: '100%',
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
   },
   card: {
-    width: SCREEN_WIDTH * 0.9,
-    height: 400,
+    width: SCREEN_WIDTH * 0.95,
+    height: '95%',
     borderRadius: 12,
     backgroundColor: theme.colors.cardBackground,
     shadowColor: theme.colors.shadow,
@@ -171,11 +172,11 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 200,
+    height: '45%',
   },
   imagePlaceholder: {
     width: '100%',
-    height: 200,
+    height: '45%',
     backgroundColor: theme.colors.border,
     justifyContent: 'center',
     alignItems: 'center',

@@ -12,8 +12,7 @@ export default function WelcomeScreen() {
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <View style={styles.logoContainer}>
-          <Text style={styles.logo}>GigConnect</Text>
-          <Text style={styles.logoAI}>AI</Text>
+          <Text style={styles.logo}>Tiro</Text>
         </View>
         
         <Image 

@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 16,
+    padding: 8,
   },
   loadingContainer: {
     alignItems: 'center',

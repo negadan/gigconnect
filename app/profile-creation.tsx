@@ -22,15 +22,23 @@ interface Message {
 
 // Profile data interface
 interface ProfileData {
+  name: string;
   skills: string[];
   interests: string[];
   availability: string;
   locationArea: string;
+  bio: string;
 }
 
 const ProfileCreationChatScreen: FC = () => {
-  // State for messages
-  const [messages, setMessages] = useState<Message[]>([]);
+  // State for messages with initial welcome message
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: 'welcome-msg',
+      text: 'Welcome to Tiro! I see you\'re setting up your profile as Sipho Nkosi. I\'ve already filled in some information based on your registration. Would you like to review or update any of your profile details?',
+      sender: 'ai'
+    }
+  ]);
   
   // State for current input
   const [currentInput, setCurrentInput] = useState<string>('');
@@ -40,10 +48,12 @@ const ProfileCreationChatScreen: FC = () => {
 
   // State for extracted profile data
   const [extractedProfileData, setExtractedProfileData] = useState<ProfileData>({
-    skills: [],
-    interests: [],
-    availability: '',
-    locationArea: ''
+    name: 'Sipho Nkosi',
+    skills: ['Gardening', 'Pet Care', 'Delivery', 'Photography'],
+    interests: ['Outdoor activities', 'Technology', 'Sports'],
+    availability: 'Weekends and evenings',
+    locationArea: 'Midrand, Gauteng',
+    bio: 'I\'m a university student looking to earn extra income in my spare time. I have reliable transportation and am available most weekends.'
   });
 
   // State to track conversation completion
@@ -101,10 +111,12 @@ const ProfileCreationChatScreen: FC = () => {
 
           // Check if all profile fields are populated
           if (
+            updatedProfileData.name &&
             updatedProfileData.skills.length > 0 &&
             updatedProfileData.interests.length > 0 &&
             updatedProfileData.availability &&
-            updatedProfileData.locationArea
+            updatedProfileData.locationArea &&
+            updatedProfileData.bio
           ) {
             setIsConversationComplete(true);
           }
@@ -145,11 +157,13 @@ const ProfileCreationChatScreen: FC = () => {
         borderBottomColor: '#CCCCCC'
       }}>
         <Text style={{ fontWeight: 'bold', marginBottom: 5 }}>Profile Progress:</Text>
-        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-          <Text>Skills: {extractedProfileData.skills.join(', ') || 'Not set'}</Text>
-          <Text style={{ marginLeft: 10 }}>Interests: {extractedProfileData.interests.join(', ') || 'Not set'}</Text>
-          <Text style={{ marginTop: 5 }}>Availability: {extractedProfileData.availability || 'Not set'}</Text>
-          <Text style={{ marginTop: 5 }}>Location: {extractedProfileData.locationArea || 'Not set'}</Text>
+        <View style={{ flexDirection: 'column' }}>
+          <Text style={{ fontWeight: '600', marginBottom: 2 }}>Name: {extractedProfileData.name}</Text>
+          <Text style={{ marginBottom: 2 }}>Location: {extractedProfileData.locationArea || 'Not set'}</Text>
+          <Text style={{ marginBottom: 2 }}>Skills: {extractedProfileData.skills.join(', ') || 'Not set'}</Text>
+          <Text style={{ marginBottom: 2 }}>Interests: {extractedProfileData.interests.join(', ') || 'Not set'}</Text>
+          <Text style={{ marginBottom: 2 }}>Availability: {extractedProfileData.availability || 'Not set'}</Text>
+          <Text style={{ marginBottom: 2 }}>Bio: {extractedProfileData.bio || 'Not set'}</Text>
         </View>
       </View>
 

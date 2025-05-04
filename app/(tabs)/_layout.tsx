@@ -53,7 +53,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="saved"
         options={{
-          title: 'Saved',
+          title: 'Applied',
           tabBarIcon: ({ color, size }) => (
             <Heart size={size} color={color} />
           ),
