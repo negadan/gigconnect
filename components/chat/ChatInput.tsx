@@ -5,10 +5,13 @@ import {
   TextInput, 
   TouchableOpacity,
   ActivityIndicator,
-  Keyboard
+  Keyboard,
+  Text,
+  Alert
 } from 'react-native';
 import { Send } from 'lucide-react-native';
 import { theme } from '@/constants/theme';
+import * as ImagePicker from 'expo-image-picker';
 
 interface ChatInputProps {
   onSend: (message: string) => void;
@@ -32,9 +35,55 @@ export function ChatInput({
       Keyboard.dismiss();
     }
   };
+
+  const handleAttachMedia = async () => {
+    // 1. Request Permissions (Media Library)
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      Alert.alert("Permission Required", "You need to allow access to your photos to attach media.");
+      return;
+    }
+
+    // 2. Launch Image Picker (Library)
+    try {
+      const pickerResult = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images, // Only allow images for now
+          allowsEditing: true, // Optional: allow basic editing
+          aspect: [4, 3], // Optional: set aspect ratio for editing
+          quality: 0.8, // Optional: reduce image quality (0 to 1)
+      });
+
+      // 3. Handle result
+      if (pickerResult.canceled === true) {
+        console.log('Image selection cancelled');
+        return;
+      }
+
+      if (pickerResult.assets && pickerResult.assets.length > 0) {
+          const imageUri = pickerResult.assets[0].uri;
+          console.log('Selected Image URI:', imageUri);
+          // TODO: Handle the image URI
+          // - Add to message data structure?
+          // - Display preview?
+          // - Start upload process?
+      }
+    } catch (error) {
+        console.error("Error picking image: ", error);
+        Alert.alert("Error", "Could not pick image.");
+    }
+  };
   
   return (
     <View style={styles.container}>
+      <TouchableOpacity
+        style={styles.attachButton}
+        onPress={handleAttachMedia}
+        disabled={disabled || loading}
+      >
+        <Text style={styles.attachButtonText}>+</Text>
+      </TouchableOpacity>
+      
       <TextInput
         style={styles.input}
         placeholder={placeholder}
@@ -72,6 +121,19 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: theme.colors.border,
     backgroundColor: theme.colors.background,
+  },
+  attachButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginRight: 8,
+  },
+  attachButtonText: {
+    fontSize: 24,
+    color: theme.colors.primary,
+    fontWeight: 'bold'
   },
   input: {
     flex: 1,
